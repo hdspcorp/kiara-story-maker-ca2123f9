@@ -77,14 +77,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Capacitação Alpha Core | Keevo" },
+      { name: "description", content: "Trilha oficial de capacitação do Alpha Core: configure, use e domine o sistema com vídeos passo a passo e assistência da Kiara." },
+      { name: "author", content: "Keevo" },
+      { property: "og:title", content: "Capacitação Alpha Core | Keevo" },
+      { property: "og:description", content: "Aprenda a configurar e usar o Alpha com segurança, passo a passo." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
