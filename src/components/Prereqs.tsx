@@ -1,4 +1,4 @@
-import { ChevronDown, FileCheck2, ShieldCheck } from "lucide-react";
+import { AlertTriangle, ChevronDown, FileCheck2, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import type { PrereqItem } from "@/lib/default-content";
 
@@ -15,11 +15,11 @@ export function PrereqsAccordion({
   return (
     <section
       aria-labelledby="prereqs-title"
-      className="relative overflow-hidden rounded-3xl border border-primary/25 bg-white p-6 shadow-[0_22px_60px_rgba(15,118,110,0.12)]"
+      className="relative overflow-hidden rounded-[2rem] border border-primary/30 bg-[linear-gradient(135deg,#ffffff_0%,#ffffff_58%,oklch(0.97_0.035_155)_100%)] p-6 shadow-[0_28px_80px_rgba(15,118,110,0.18)] ring-1 ring-primary/10"
     >
       <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-emerald-300 to-cyan-300" />
       <div className="flex items-start gap-3">
-        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/15">
+        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-emerald-900/20 ring-4 ring-primary/10">
           <ShieldCheck className="h-5 w-5" />
         </span>
         <div>
@@ -31,7 +31,13 @@ export function PrereqsAccordion({
           </h2>
         </div>
       </div>
-      <p className="mt-1 text-sm text-muted-foreground">{lead}</p>
+      <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50/80 p-4 text-sm leading-6 text-amber-950 shadow-sm">
+        <p className="flex items-center gap-2 font-bold">
+          <AlertTriangle className="h-4 w-4" />
+          Validação indispensável antes da implantação
+        </p>
+        <p className="mt-1">{lead}</p>
+      </div>
       <ul className="mt-5 space-y-3">
         {items.map((it) => {
           const isOpen = open === it.id;
