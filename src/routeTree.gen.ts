@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as CapacitacaoRouteImport } from './routes/capacitacao'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiKiaraRouteImport } from './routes/api/kiara'
 
+const CapacitacaoRoute = CapacitacaoRouteImport.update({
+  id: '/capacitacao',
+  path: '/capacitacao',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -25,32 +31,43 @@ const ApiKiaraRoute = ApiKiaraRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/capacitacao': typeof CapacitacaoRoute
   '/api/kiara': typeof ApiKiaraRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/capacitacao': typeof CapacitacaoRoute
   '/api/kiara': typeof ApiKiaraRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/capacitacao': typeof CapacitacaoRoute
   '/api/kiara': typeof ApiKiaraRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/kiara'
+  fullPaths: '/' | '/capacitacao' | '/api/kiara'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/kiara'
-  id: '__root__' | '/' | '/api/kiara'
+  to: '/' | '/capacitacao' | '/api/kiara'
+  id: '__root__' | '/' | '/capacitacao' | '/api/kiara'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CapacitacaoRoute: typeof CapacitacaoRoute
   ApiKiaraRoute: typeof ApiKiaraRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/capacitacao': {
+      id: '/capacitacao'
+      path: '/capacitacao'
+      fullPath: '/capacitacao'
+      preLoaderRoute: typeof CapacitacaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CapacitacaoRoute: CapacitacaoRoute,
   ApiKiaraRoute: ApiKiaraRoute,
 }
 export const routeTree = rootRouteImport
