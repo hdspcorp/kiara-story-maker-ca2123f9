@@ -188,7 +188,7 @@ function Home() {
       <SiteFooter />
       <button
         onClick={() => (admin.isAdmin ? setEditorOpen(true) : setLoginOpen(true))}
-        className="fixed bottom-4 right-4 rounded-full border bg-card px-3 py-2 text-xs text-muted-foreground shadow hover:bg-muted"
+        className="fixed right-4 top-20 z-40 rounded-full border border-primary/20 bg-white px-4 py-2 text-xs font-bold text-primary shadow-lg shadow-emerald-950/10 hover:bg-emerald-50"
         aria-label="Modo administrativo"
       >
         {admin.isAdmin ? "⚙ Admin" : "Admin"}
@@ -196,7 +196,7 @@ function Home() {
       {admin.isAdmin && (
         <button
           onClick={() => admin.logout()}
-          className="fixed bottom-4 right-24 rounded-full border bg-card px-3 py-2 text-xs text-muted-foreground shadow hover:bg-muted"
+          className="fixed right-4 top-32 z-40 rounded-full border bg-white px-3 py-2 text-xs text-muted-foreground shadow hover:bg-muted"
         >
           Sair
         </button>
