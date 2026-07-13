@@ -8,16 +8,25 @@ async function getAdmin() {
 }
 
 async function readChannel(channel: "published" | "draft"): Promise<Content> {
-  const admin = await getAdmin();
-  const { data, error } = await admin
-    .from("content_state")
-    .select("data")
-    .eq("channel", channel)
-    .maybeSingle();
-  if (error) throw new Error(error.message);
-  const raw = (data?.data ?? {}) as Partial<Content>;
-  if (!raw || !raw.groups) return DEFAULT_CONTENT;
-  return raw as Content;
+  try {
+    const admin = await getAdmin();
+    const { data, error } = await admin
+      .from("content_state")
+      .select("data")
+      .eq("channel", channel)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    const raw = (data?.data ?? {}) as Partial<Content>;
+    if (!raw || !raw.groups) return DEFAULT_CONTENT;
+    return raw as Content;
+  } catch (error) {
+    if (channel === "published") {
+      console.warn("[Content] Falling back to default published content.", error);
+      return DEFAULT_CONTENT;
+    }
+
+    throw error;
+  }
 }
 
 async function writeChannel(channel: "published" | "draft", content: Content) {
@@ -49,8 +58,12 @@ export const fetchPublished = createServerFn({ method: "GET" }).handler(async ()
   // seed the published row from DEFAULT_CONTENT if empty
   const c = await readChannel("published");
   if (c === DEFAULT_CONTENT) {
-    await writeChannel("published", DEFAULT_CONTENT);
-    await writeChannel("draft", DEFAULT_CONTENT);
+    try {
+      await writeChannel("published", DEFAULT_CONTENT);
+      await writeChannel("draft", DEFAULT_CONTENT);
+    } catch (error) {
+      console.warn("[Content] Could not seed Supabase content state.", error);
+    }
   }
   return c;
 });
@@ -63,7 +76,7 @@ export const kiaraStatus = createServerFn({ method: "GET" }).handler(async () =>
 
 // ---------- Admin: login ----------
 export const adminLogin = createServerFn({ method: "POST" })
-  .inputValidator((d: { username: string; password: string }) => d)
+  .validator((d: { username: string; password: string }) => d)
   .handler(async ({ data }) => {
     const u = process.env.ADMIN_USERNAME;
     const p = process.env.ADMIN_PASSWORD;
@@ -86,7 +99,7 @@ export const adminLogin = createServerFn({ method: "POST" })
   });
 
 export const adminLogout = createServerFn({ method: "POST" })
-  .inputValidator((d: { token: string }) => d)
+  .validator((d: { token: string }) => d)
   .handler(async ({ data }) => {
     const admin = await getAdmin();
     await admin.from("admin_sessions").delete().eq("token", data.token);
@@ -94,19 +107,19 @@ export const adminLogout = createServerFn({ method: "POST" })
   });
 
 export const adminCheck = createServerFn({ method: "POST" })
-  .inputValidator((d: { token: string }) => d)
+  .validator((d: { token: string }) => d)
   .handler(async ({ data }) => ({ valid: await validateToken(data.token) }));
 
 // ---------- Admin: draft read/save ----------
 export const adminGetDraft = createServerFn({ method: "POST" })
-  .inputValidator((d: { token: string }) => d)
+  .validator((d: { token: string }) => d)
   .handler(async ({ data }) => {
     if (!(await validateToken(data.token))) throw new Error("Sessão administrativa expirada.");
     return await readChannel("draft");
   });
 
 export const adminSaveDraft = createServerFn({ method: "POST" })
-  .inputValidator((d: { token: string; content: Content }) => d)
+  .validator((d: { token: string; content: Content }) => d)
   .handler(async ({ data }) => {
     if (!(await validateToken(data.token))) throw new Error("Sessão administrativa expirada.");
     await writeChannel("draft", data.content);
@@ -114,7 +127,7 @@ export const adminSaveDraft = createServerFn({ method: "POST" })
   });
 
 export const adminPublish = createServerFn({ method: "POST" })
-  .inputValidator((d: { token: string }) => d)
+  .validator((d: { token: string }) => d)
   .handler(async ({ data }) => {
     if (!(await validateToken(data.token))) throw new Error("Sessão administrativa expirada.");
     const draft = await readChannel("draft");
