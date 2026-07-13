@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { CheckCircle2, ChevronLeft, Home, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
+import { FloatingAdminButton } from "@/components/FloatingAdminButton";
 import { SiteHeader } from "@/components/SiteHeader";
 import { TreeMenu } from "@/components/TreeMenu";
 import { VideoPanel } from "@/components/VideoPanel";
@@ -16,7 +17,7 @@ export const Route = createFileRoute("/capacitacao")({
 });
 
 function Capacitacao() {
-  const { content } = usePublishedContent();
+  const { content, reload } = usePublishedContent();
   const search = Route.useSearch();
   const nav = useNavigate({ from: "/capacitacao" });
   const homeNav = useNavigate();
@@ -120,6 +121,7 @@ function Capacitacao() {
           <KiaraPanel title={content.kiara.title} intro={content.kiara.intro} />
         </aside>
       </div>
+      <FloatingAdminButton onPublished={reload} />
     </div>
   );
 }
