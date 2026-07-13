@@ -20,26 +20,11 @@ export function VideoPanel({
   hasPrev: boolean;
   hasNext: boolean;
 }) {
-  let found: {
-    title: string;
-    url: string;
-    group: string;
-    menu: string;
-    description: string;
-    duration: string;
-  } | null = null;
+  let found: { title: string; url: string; group: string; menu: string } | null = null;
   for (const g of content.groups)
     for (const m of g.menus)
       for (const v of m.videos)
-        if (v.id === videoId)
-          found = {
-            title: v.title,
-            url: v.url,
-            group: g.title,
-            menu: m.title,
-            description: v.description,
-            duration: v.duration,
-          };
+        if (v.id === videoId) found = { title: v.title, url: v.url, group: g.title, menu: m.title };
   if (!found) return <div className="p-6 text-sm text-muted-foreground">Vídeo não encontrado.</div>;
   const yt = ytIdFromUrl(found.url);
   return (
@@ -49,16 +34,6 @@ export function VideoPanel({
           {found.group} · {found.menu}
         </p>
         <h1 className="mt-2 text-2xl font-bold text-slate-950">{found.title}</h1>
-        {(found.description || found.duration) && (
-          <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-            {found.duration && (
-              <span className="rounded-full bg-white px-3 py-1 font-semibold text-primary ring-1 ring-primary/15">
-                {found.duration}
-              </span>
-            )}
-            {found.description && <span>{found.description}</span>}
-          </div>
-        )}
       </header>
       <div className="flex-1 overflow-auto">
         <div className="mx-auto max-w-5xl p-5">
@@ -74,7 +49,7 @@ export function VideoPanel({
               />
             ) : (
               <div className="grid h-full place-items-center p-6 text-sm text-white/70">
-                {found.url ? "URL inválida." : "Conteúdo em produção."}
+                URL inválida.
               </div>
             )}
           </div>

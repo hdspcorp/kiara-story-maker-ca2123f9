@@ -3,7 +3,6 @@ import { CheckCircle2, ChevronLeft, Home, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { SiteHeader } from "@/components/SiteHeader";
-import { FloatingAdminButton } from "@/components/FloatingAdminButton";
 import { TreeMenu } from "@/components/TreeMenu";
 import { VideoPanel } from "@/components/VideoPanel";
 import { KiaraPanel } from "@/components/Kiara";
@@ -17,7 +16,7 @@ export const Route = createFileRoute("/capacitacao")({
 });
 
 function Capacitacao() {
-  const { content, reload } = usePublishedContent();
+  const { content } = usePublishedContent();
   const search = Route.useSearch();
   const nav = useNavigate({ from: "/capacitacao" });
   const homeNav = useNavigate();
@@ -121,7 +120,6 @@ function Capacitacao() {
           <KiaraPanel title={content.kiara.title} intro={content.kiara.intro} />
         </aside>
       </div>
-      <FloatingAdminButton onPublished={reload} />
     </div>
   );
 }

@@ -7,10 +7,6 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
-  // Lovable's preview command serves TanStack Start's standard `dist/server/server.js`.
-  // Nitro's Cloudflare output goes to `.output/server/index.mjs`, which makes
-  // `vite preview` return ERR_MODULE_NOT_FOUND in the Lovable preview.
-  nitro: false,
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this

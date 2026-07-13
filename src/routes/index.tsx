@@ -12,7 +12,8 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import { PrereqsAccordion } from "@/components/Prereqs";
-import { FloatingAdminButton } from "@/components/FloatingAdminButton";
+import { AdminLoginDialog, useAdmin } from "@/components/AdminBar";
+import { AdminEditor } from "@/components/AdminEditor";
 import { AlphaLogo } from "@/components/Brand";
 import { usePublishedContent } from "@/hooks/useContent";
 import { loadProgress, resetProgress } from "@/lib/progress";
@@ -23,6 +24,9 @@ export const Route = createFileRoute("/")({ component: Home });
 function Home() {
   const { content, reload } = usePublishedContent();
   const nav = useNavigate();
+  const admin = useAdmin();
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [editorOpen, setEditorOpen] = useState(false);
   const [progress, setProg] = useState<{ completed: string[]; lastVideoId: string | null }>({
     completed: [],
     lastVideoId: null,
@@ -182,7 +186,34 @@ function Home() {
         </section>
       </main>
       <SiteFooter />
-      <FloatingAdminButton onPublished={reload} />
+      <button
+        onClick={() => (admin.isAdmin ? setEditorOpen(true) : setLoginOpen(true))}
+        className="fixed bottom-4 right-4 rounded-full border bg-card px-3 py-2 text-xs text-muted-foreground shadow hover:bg-muted"
+        aria-label="Modo administrativo"
+      >
+        {admin.isAdmin ? "⚙ Admin" : "Admin"}
+      </button>
+      {admin.isAdmin && (
+        <button
+          onClick={() => admin.logout()}
+          className="fixed bottom-4 right-24 rounded-full border bg-card px-3 py-2 text-xs text-muted-foreground shadow hover:bg-muted"
+        >
+          Sair
+        </button>
+      )}
+      <AdminLoginDialog
+        open={loginOpen}
+        onClose={() => setLoginOpen(false)}
+        onLoggedIn={() => setEditorOpen(true)}
+      />
+      {admin.token && (
+        <AdminEditor
+          token={admin.token}
+          open={editorOpen}
+          onClose={() => setEditorOpen(false)}
+          onPublished={reload}
+        />
+      )}
     </div>
   );
 }
