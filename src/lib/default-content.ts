@@ -114,7 +114,7 @@ export const DEFAULT_CONTENT: Content = {
         {
           id: "g1m1",
           order: 1,
-          title: "Primeiros passos e Keevo Center",
+          title: "Introdução ao curso e Keevo Center",
           videos: [
             {
               id: "v1",
@@ -124,11 +124,11 @@ export const DEFAULT_CONTENT: Content = {
               required: true,
               duration: "",
               description:
-                "Primeiro contato para cadastro da empresa, certificado e contexto inicial do Keevo Center.",
+                "Primeiro contato para cadastrar a empresa, apresentar o Keevo Center, iniciar a implantação e reforçar o vínculo do Certificado Digital A1.",
               objectives: [
-                "Cadastrar a empresa",
+                "Cadastrar a empresa no Keevo Center",
                 "Vincular o certificado A1",
-                "Conhecer o fluxo inicial de implantação",
+                "Conhecer as ferramentas e o contexto inicial da implantação",
               ],
             },
             {
@@ -290,6 +290,7 @@ export const DEFAULT_CONTENT: Content = {
             },
           ],
         },
+        { id: "g3m2", order: 2, title: "Documentos fiscais complementares", videos: [] },
       ],
     },
     {
@@ -332,11 +333,18 @@ export const DEFAULT_CONTENT: Content = {
               description: "Movimento bancário, baixa parcial e total de lançamentos financeiros.",
               objectives: [],
             },
+          ],
+        },
+        {
+          id: "g4m2",
+          order: 2,
+          title: "Documentos financeiros complementares",
+          videos: [
             {
               id: "v9",
               title: "Lançamento Recorrente",
               url: "https://youtu.be/SqJS5jCmLUE?si=QimcHWYZYn2wYIH3",
-              order: 4,
+              order: 1,
               required: true,
               duration: "",
               description: "Configuração de recorrências financeiras complementares.",
@@ -344,6 +352,14 @@ export const DEFAULT_CONTENT: Content = {
             },
           ],
         },
+      ],
+    },
+    {
+      id: "g5",
+      order: 5,
+      title: "ALPHA CORE · Aula 5 · Add-ons",
+      menus: [
+        { id: "g5m1", order: 1, title: "Configuração e Faturamento de Contratos", videos: [] },
       ],
     },
   ],

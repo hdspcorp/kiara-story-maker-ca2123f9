@@ -68,6 +68,7 @@ export function AdminEditor({
         <div>
           <h2 className="text-lg font-semibold">Modo administrativo</h2>
           <p className="text-xs text-muted-foreground">
+            Edite página inicial, pré-requisitos, assistente Kiara e toda a trilha de capacitação.
             Alterações ficam em rascunho até você publicar.
           </p>
         </div>
@@ -168,6 +169,16 @@ function TreeEditor({
             className="mt-1 w-full rounded border bg-background px-2 py-1 text-sm font-normal"
           />
         </label>
+        <label className="text-xs font-semibold">
+          CTA revisar
+          <input
+            value={draft.page.ctaReview}
+            onChange={(e) =>
+              update((c) => ({ ...c, page: { ...c.page, ctaReview: e.target.value } }))
+            }
+            className="mt-1 w-full rounded border bg-background px-2 py-1 text-sm font-normal"
+          />
+        </label>
       </section>
       <section className="space-y-3 rounded-lg border p-3">
         <div className="grid gap-3 md:grid-cols-2">
@@ -223,6 +234,48 @@ function TreeEditor({
             />
           </div>
         ))}
+      </section>
+      <section className="grid gap-3 rounded-lg border p-3 md:grid-cols-2">
+        <label className="text-xs font-semibold">
+          Título da Kiara
+          <input
+            value={draft.kiara.title}
+            onChange={(e) =>
+              update((c) => ({ ...c, kiara: { ...c.kiara, title: e.target.value } }))
+            }
+            className="mt-1 w-full rounded border bg-background px-2 py-1 text-sm font-normal"
+          />
+        </label>
+        <label className="text-xs font-semibold">
+          Placeholder da Kiara
+          <input
+            value={draft.kiara.placeholder}
+            onChange={(e) =>
+              update((c) => ({ ...c, kiara: { ...c.kiara, placeholder: e.target.value } }))
+            }
+            className="mt-1 w-full rounded border bg-background px-2 py-1 text-sm font-normal"
+          />
+        </label>
+        <label className="text-xs font-semibold md:col-span-2">
+          Introdução da Kiara
+          <textarea
+            value={draft.kiara.intro}
+            onChange={(e) =>
+              update((c) => ({ ...c, kiara: { ...c.kiara, intro: e.target.value } }))
+            }
+            className="mt-1 min-h-16 w-full rounded border bg-background px-2 py-1 text-sm font-normal"
+          />
+        </label>
+        <label className="text-xs font-semibold md:col-span-2">
+          Mensagem inicial da Kiara
+          <textarea
+            value={draft.kiara.initialMessage}
+            onChange={(e) =>
+              update((c) => ({ ...c, kiara: { ...c.kiara, initialMessage: e.target.value } }))
+            }
+            className="mt-1 min-h-16 w-full rounded border bg-background px-2 py-1 text-sm font-normal"
+          />
+        </label>
       </section>
       {sorted.map((g, gi) => {
         const menus = [...g.menus].sort((a, b) => a.order - b.order);
@@ -305,10 +358,7 @@ function TreeEditor({
                     </div>
                     <div className="space-y-2 p-2">
                       {vids.map((v, vi) => (
-                        <div
-                          key={v.id}
-                          className="grid gap-2 rounded border p-2 md:grid-cols-[1fr_1fr_auto]"
-                        >
+                        <div key={v.id} className="grid gap-2 rounded border p-2 md:grid-cols-2">
                           <input
                             value={v.title}
                             placeholder="Título do vídeo"
@@ -325,7 +375,58 @@ function TreeEditor({
                             }
                             className={`rounded border bg-background px-2 py-1 text-sm ${v.url && !ytIdFromUrl(v.url) ? "border-destructive" : ""}`}
                           />
-                          <div className="flex items-center gap-1">
+                          <textarea
+                            value={v.description}
+                            placeholder="Descrição do vídeo"
+                            onChange={(e) =>
+                              updateVideo(g.id, m.id, v.id, { description: e.target.value }, update)
+                            }
+                            className="min-h-20 rounded border bg-background px-2 py-1 text-sm md:col-span-2"
+                          />
+                          <input
+                            value={v.duration}
+                            placeholder="Duração"
+                            onChange={(e) =>
+                              updateVideo(g.id, m.id, v.id, { duration: e.target.value }, update)
+                            }
+                            className="rounded border bg-background px-2 py-1 text-sm"
+                          />
+                          <input
+                            value={v.objectives.join("\n")}
+                            placeholder="Objetivos (um por linha)"
+                            onChange={(e) =>
+                              updateVideo(
+                                g.id,
+                                m.id,
+                                v.id,
+                                {
+                                  objectives: e.target.value
+                                    .split("\n")
+                                    .map((x) => x.trim())
+                                    .filter(Boolean),
+                                },
+                                update,
+                              )
+                            }
+                            className="rounded border bg-background px-2 py-1 text-sm"
+                          />
+                          <div className="flex items-center gap-3 md:col-span-2">
+                            <label className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
+                              <input
+                                type="checkbox"
+                                checked={v.required}
+                                onChange={(e) =>
+                                  updateVideo(
+                                    g.id,
+                                    m.id,
+                                    v.id,
+                                    { required: e.target.checked },
+                                    update,
+                                  )
+                                }
+                              />
+                              Obrigatório
+                            </label>
                             <OrderCtl
                               first={vi === 0}
                               last={vi === vids.length - 1}
