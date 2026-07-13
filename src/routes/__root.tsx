@@ -81,9 +81,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Trilha oficial de capacitação do Alpha Core: configure, use e domine o sistema com vídeos passo a passo e assistência da Kiara." },
       { name: "author", content: "Keevo" },
       { property: "og:title", content: "Capacitação Alpha Core | Keevo" },
-      { property: "og:description", content: "Aprenda a configurar e usar o Alpha com segurança, passo a passo." },
+      { property: "og:description", content: "Trilha oficial de capacitação do Alpha Core: configure, use e domine o sistema com vídeos passo a passo e assistência da Kiara." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Capacitação Alpha Core | Keevo" },
+      { name: "twitter:description", content: "Trilha oficial de capacitação do Alpha Core: configure, use e domine o sistema com vídeos passo a passo e assistência da Kiara." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/058c44e9-b1d6-4e50-922b-3922d526dcfb/id-preview-aa7a14e3--1e10ad9a-1d79-47e9-9844-86903a1a4371.lovable.app-1783967098290.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/058c44e9-b1d6-4e50-922b-3922d526dcfb/id-preview-aa7a14e3--1e10ad9a-1d79-47e9-9844-86903a1a4371.lovable.app-1783967098290.png" },
     ],
     links: [
       {
